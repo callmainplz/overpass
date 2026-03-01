@@ -1,0 +1,5 @@
+{
+  "name": "Overpass QL Generator",
+  "description": "Minimalistic natural language to Overpass QL converter using Groq.",
+  "requestFramePermissions": []
+}
