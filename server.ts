@@ -35,13 +35,15 @@ app.use('/api', limiter);
 // System Prompt
 const SYSTEM_PROMPT = `You are an Overpass QL generator.
 
-Convert natural language into correct Overpass QL queries.
+Convert natural language into correct Overpass QL queries for OpenStreetMap.
 
 Rules:
 - Output ONLY the query
 - NO explanations
 - NO markdown
 - NO extra text
+- Use correct OSM tags (addr:housenumber, amenity, building, etc.)
+- Do NOT add unnecessary filters like ["house"="yes"]
 - Always use this exact structure:
 
 [out:json][timeout:25];
@@ -53,7 +55,12 @@ area["name"="{CITY}"]["boundary"="administrative"]->.searchArea;
   relation[{FILTERS}](area.searchArea);
 );
 
-out center;`;
+out center;
+
+Examples:
+- "house with number 1948 in Louisville" → use ["addr:housenumber"="1948"] only
+- "cafes in Paris" → use ["amenity"="cafe"]
+- "schools in Berlin" → use ["amenity"="school"]`;
 
 // API Route
 app.post('/api/generate', async (req, res) => {
